@@ -1,0 +1,57 @@
+﻿@model IEnumerable<SchoolApplication.Models.Student>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Ученици</h1>
+
+<p>
+    <a asp-action="Create">Създай нов</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Име
+                @*@Html.DisplayNameFor(model => model.FirstName)*@   
+            </th>
+            <th>
+                Фамилия
+                @*@Html.DisplayNameFor(model => model.LastName)*@
+            </th>
+            <th>
+                Град
+                @*@Html.DisplayNameFor(model => model.Town)*@
+            </th>
+            <th>
+                Оценка
+                @*@Html.DisplayNameFor(model => model.AverageGrade)*@
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FirstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.LastName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Town)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AverageGrade)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Промени</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Детайли</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Изтрий</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
