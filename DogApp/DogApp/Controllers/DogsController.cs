@@ -59,7 +59,118 @@ namespace DogApp.Controllers
                 Img = dogFromDb.Img
             }).ToList();
             return View(dogs);
-        }}
+        }
 
+        public IActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+
+                return NotFound();
+            }
+
+            Dog item = context.Dogs.Find(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            DogEditViewModel dog = new DogEditViewModel()
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Age = item.Age,
+                Breed = item.Breed,
+                Img = item.Img
+            };
+
+            return View(dog);
+
+
+        }
+        [HttpPost]
+        public IActionResult Edit(DogEditViewModel bindingModel)
+        {
+            if (ModelState.IsValid)
+            {
+                Dog dog = new Dog
+                {
+                    Id = bindingModel.Id,
+                    Name = bindingModel.Name,
+                    Age = bindingModel.Age,
+                    Breed = bindingModel.Breed,
+                    Img = bindingModel.Img
+
+                };
+                context.Dogs.Update(dog);
+                context.SaveChanges();
+                return this.RedirectToAction("All");
+            }
+            return this.View();
+        }
+        public IActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+
+                return NotFound();
+            }
+
+            Dog item = context.Dogs.Find(id);
+            if (item == null)
+            {
+                return NotFound();
+            }
+
+            DogDeleteViewModel dog = new DogDeleteViewModel()
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Age = item.Age,
+                Breed = item.Breed,
+                Img = item.Img
+            };
+
+            return View(dog);
+
+
+        }
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            Dog item = context.Dogs.Find(id);
+            if (item==null)
+            {
+                return NotFound();
+            }
+            context.Dogs.Remove(item);
+            context.SaveChanges();
+            return this.RedirectToAction("All", "Dogs");
+        }
+       
+        public IActionResult Details(int? id)
+        {
+            
+            if (id == null)
+            {
+                return NotFound();
+            }
+            Dog item = context.Dogs.Find(id);
+            if (item==null)
+            {
+                return NotFound();
+            }
+            DogDetailsViewModel dog = new DogDetailsViewModel()
+            {
+                Id = item.Id,
+                Name = item.Name,
+                Age = item.Age,
+                Breed = item.Breed,
+                Img = item.Img
+
+            };
+            return View(dog);
+        }
     }
+}
 
