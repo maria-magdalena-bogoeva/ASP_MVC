@@ -19,5 +19,6 @@ namespace DogApp.Data
         public DbSet<DogApp.Models.DogEditViewModel> DogEditViewModel { get; set; }
         public DbSet<DogApp.Models.DogDeleteViewModel> DogDeleteViewModel { get; set; }
         public DbSet<DogApp.Models.DogDetailsViewModel> DogDetailsViewModel { get; set; }
+        public DbSet<DogApp.Models.DogAllViewModel> DogAllViewModel { get; set; }
     }
 }

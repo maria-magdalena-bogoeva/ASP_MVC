@@ -48,7 +48,7 @@ namespace DogApp.Controllers
         {
             return this.View();
         }
-        public IActionResult All()
+        public IActionResult All(string searchStringBreed,string searchStringName)
         {
             List<DogAllViewModel> dogs = context.Dogs.Select(dogFromDb => new DogAllViewModel
             {
@@ -58,9 +58,37 @@ namespace DogApp.Controllers
                 Breed = dogFromDb.Breed,
                 Img = dogFromDb.Img
             }).ToList();
+            if (!String.IsNullOrEmpty(searchStringBreed)&&!String.IsNullOrEmpty(searchStringName))
+            {
+                dogs = dogs.Where(d => d.Breed.ToLower()==searchStringBreed.ToLower()&& d.Name.ToLower()==searchStringName.ToLower()).ToList();
+            }
+            else if (!String.IsNullOrEmpty(searchStringBreed))
+            {
+                dogs = dogs.Where(d => d.Breed.ToLower()==searchStringBreed.ToLower()).ToList();
+            }
+            else if (!String.IsNullOrEmpty(searchStringName))
+            {
+                dogs = dogs.Where(d => d.Name.ToLower()==searchStringName.ToLower()).ToList();
+            }
+
             return View(dogs);
         }
 
+        public IActionResult Sort()
+        {
+            List<DogAllViewModel> dogs = context.Dogs.Select(dogFromDb => new DogAllViewModel
+            {
+                Id = dogFromDb.Id,
+                Name = dogFromDb.Name,
+                Age = dogFromDb.Age,
+                Breed = dogFromDb.Breed,
+                Img = dogFromDb.Img
+            }).OrderBy(x=>x.Name).ToList();
+            
+            
+
+            return View(dogs);
+        }
         public IActionResult Edit(int? id)
         {
             if (id == null)
