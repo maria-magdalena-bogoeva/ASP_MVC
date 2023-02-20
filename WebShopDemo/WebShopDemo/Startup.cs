@@ -11,8 +11,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WebShopDemo.Abstraction;
 using WebShopDemo.Data;
 using WebShopDemo.Domain;
+using WebShopDemo.Infrastructure;
+using WebShopDemo.Services;
 
 namespace WebShopDemo
 {
@@ -37,7 +40,7 @@ namespace WebShopDemo
             //    .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
-
+            
             services.AddDbContext<ApplicationDbContext>(options =>
             options.UseLazyLoadingProxies()
                  .UseSqlServer(
@@ -54,6 +57,8 @@ namespace WebShopDemo
 
 
             services.AddControllersWithViews();
+            services.AddTransient<ICategoryService, CategoryService>();
+            services.AddTransient<IBrandService, BrandService>();
 
             services.AddRazorPages();
             services.Configure<IdentityOptions>(option =>
@@ -72,6 +77,7 @@ namespace WebShopDemo
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.PrepareDatabase();
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
